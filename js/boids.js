@@ -1,14 +1,21 @@
 config =  {
   "canvas":{
-    "w":5000,
-    "h":5000,
+    "w":500,
+    "h":500,
   },
-  "numberOfBoids":50,
-  "boids":[]
+  "numberOfBoids":10,
+  "boids":[],
+  "v": 1.8
 }
 
 var canvas = document.getElementById('canvas'),
-context = canvas.getContext('2d');
+context = canvas.getContext('2d'),
+hSlider = document.getElementById('h'),
+wSlider = document.getElementById('w'),
+bSlider = document.getElementById('b'),
+sSlider = document.getElementById('s');
+
+
 var img = new Image();
 
 function getRandomInt(max) {
@@ -38,6 +45,16 @@ function drawRotatedImage(image, x, y, angle)
 
 function init() {
 
+  canvas.width = config.canvas.w;
+  canvas.height = config.canvas.h;
+
+  hSlider.value = config.canvas.h;
+  wSlider.value = config.canvas.w;
+
+  bSlider.value = config.numberOfBoids;
+  sSlider.value = config.v;
+
+
   img.src="img/boid.svg"
   for (var i = 0; i < config.numberOfBoids; i++) {
     x=getRandomInt(config.canvas.w/5)
@@ -58,6 +75,26 @@ function init() {
 
 }
 
+function updateH() {
+  config.canvas.h = hSlider.value;
+  canvas.height = config.canvas.h
+}
+
+function updateW() {
+  config.canvas.w = wSlider.value;
+  canvas.width = config.canvas.w
+}
+
+function updateB() {
+  config.numberOfBoids = bSlider.value;
+  //canvas.height = config.canvas.h
+}
+
+function updateS() {
+  config.v = sSlider.value;
+  //canvas.height = config.canvas.h
+}
+
 function dotProduct(u,v) {
 
   return (u.x*v.x) + (u.x*v.x)
@@ -75,7 +112,10 @@ function radians_to_degrees(radians)
 }
 
 function rotationAngle(u,v) {
-  return Math.acos((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))
+  console.log(dotProduct(u,v));
+  console.log(lenghtOfVector(u)*lenghtOfVector(v));
+  console.log(Math.acos(((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))%1));
+  return Math.acos(((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))%1)
 }
 
 function sumVectors(v1,v2) {
@@ -143,10 +183,10 @@ function rule3(bj) {
 }
 
 function preventOOB(b) {
-  if ((config.boids[b].x + config.boids[b].v.x) > 5000 || (config.boids[b].x + config.boids[b].v.x) < 0) {
+  if ((config.boids[b].x + config.boids[b].v.x) > config.canvas.w || (config.boids[b].x + config.boids[b].v.x) < 0) {
     config.boids[b].v.x = -config.boids[b].v.x
   }
-  if ((config.boids[b].y + config.boids[b].v.y) > 5000 || (config.boids[b].y + config.boids[b].v.y) < 0) {
+  if ((config.boids[b].y + config.boids[b].v.y) > config.canvas.h || (config.boids[b].y + config.boids[b].v.y) < 0) {
     config.boids[b].v.y = -config.boids[b].v.y
   }
 }
@@ -157,8 +197,8 @@ function moveAllBoids() {
     v1=rule1(config.boids[b]);
     v2=rule2(config.boids[b]);
     v3=rule3(config.boids[b]);
-    config.boids[b].v.x = (config.boids[b].v.x + v1.x + v2.x + v3.x)/1.2
-    config.boids[b].v.y = (config.boids[b].v.y + v1.y + v2.y + v3.y)/1.2
+    config.boids[b].v.x = (config.boids[b].v.x + v1.x + v2.x + v3.x)/config.v
+    config.boids[b].v.y = (config.boids[b].v.y + v1.y + v2.y + v3.y)/config.v
 
     preventOOB(b);
 
@@ -171,7 +211,7 @@ function moveAllBoids() {
 function loop() {
   moveAllBoids()
   drawBoids()
-  setTimeout(loop,10)
+  setTimeout(loop,0.5)
 }
 
 init()

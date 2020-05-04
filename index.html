@@ -13,6 +13,16 @@
 
 <body>
   <canvas id="canvas" width="5000" height="5000"></canvas>
+  <form id="fixed">
+    <p>height</p>
+    <input type="range" min="100" max="5000" value="50" class="slider" id="h" onchange="updateH()">
+    <p>width</p>
+    <input type="range" min="1" max="5000" value="50" class="slider" id="w" onchange="updateW()">
+    <p>boids</p>
+    <input type="range" min="1" max="100" value="50" class="slider" id="b" onchange="updateB()">
+    <p>speed </p>
+    <input type="range" min="1.0" max="2.0" value="1.5" class="slider" id="s" step="0.1" onchange="updateS()">
+  </form>
   <script src="js/boids.js"></script>
 </body>
 </html>
