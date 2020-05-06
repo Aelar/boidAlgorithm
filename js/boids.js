@@ -5,7 +5,8 @@ config =  {
   },
   "numberOfBoids":10,
   "boids":[],
-  "v": 1.8
+  "v": 1.8,
+  "loop":0.5
 }
 
 var canvas = document.getElementById('canvas'),
@@ -14,6 +15,7 @@ hSlider = document.getElementById('h'),
 wSlider = document.getElementById('w'),
 bSlider = document.getElementById('b'),
 sSlider = document.getElementById('s');
+lSlider = document.getElementById('l');
 
 
 var img = new Image();
@@ -43,18 +45,8 @@ function drawRotatedImage(image, x, y, angle)
     context.restore();
 }
 
-function init() {
-
-  canvas.width = config.canvas.w;
-  canvas.height = config.canvas.h;
-
-  hSlider.value = config.canvas.h;
-  wSlider.value = config.canvas.w;
-
-  bSlider.value = config.numberOfBoids;
-  sSlider.value = config.v;
-
-
+function initBoids() {
+  config.boids = []
   img.src="img/boid.svg"
   for (var i = 0; i < config.numberOfBoids; i++) {
     x=getRandomInt(config.canvas.w/5)
@@ -70,6 +62,22 @@ function init() {
           }
         }
       }
+}
+
+function init() {
+
+  canvas.width = config.canvas.w;
+  canvas.height = config.canvas.h;
+
+  hSlider.value = config.canvas.h;
+  wSlider.value = config.canvas.w;
+
+  bSlider.value = config.numberOfBoids;
+  sSlider.value = config.v;
+  lSlider.value = config.loop
+
+
+  initBoids()
 
       loop()
 
@@ -87,11 +95,16 @@ function updateW() {
 
 function updateB() {
   config.numberOfBoids = bSlider.value;
-  //canvas.height = config.canvas.h
+  initBoids()
 }
 
 function updateS() {
   config.v = sSlider.value;
+  //canvas.height = config.canvas.h
+}
+
+function updateL() {
+  config.loop = lSlider.value;
   //canvas.height = config.canvas.h
 }
 
@@ -211,7 +224,7 @@ function moveAllBoids() {
 function loop() {
   moveAllBoids()
   drawBoids()
-  setTimeout(loop,0.5)
+  setTimeout(loop,config.loop)
 }
 
 init()
