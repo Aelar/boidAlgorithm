@@ -49,8 +49,8 @@ function initBoids() {
   config.boids = []
   img.src="img/boid.svg"
   for (var i = 0; i < config.numberOfBoids; i++) {
-    x=getRandomInt(config.canvas.w/5)
-    y=getRandomInt(config.canvas.h/5)
+    x=getRandomInt(config.canvas.w)
+    y=getRandomInt(config.canvas.h)
     b = {"x":x,
         "y":y,
       "v":{"x":getRandomInt(100),"y":getRandomInt(100)}}
@@ -125,10 +125,11 @@ function radians_to_degrees(radians)
 }
 
 function rotationAngle(u,v) {
-  console.log(dotProduct(u,v));
+  /*console.log(dotProduct(u,v));
   console.log(lenghtOfVector(u)*lenghtOfVector(v));
-  console.log(Math.acos(((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))%1));
-  return Math.acos(((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))%1)
+  console.log(Math.acos(((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))%1));*/
+  //return Math.acos(((dotProduct(u,v))/(lenghtOfVector(u)*lenghtOfVector(v)))%1)
+  return dotProduct(u,v)*Math.cos(Math.PI)
 }
 
 function sumVectors(v1,v2) {
